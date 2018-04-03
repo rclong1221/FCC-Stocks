@@ -17,6 +17,9 @@
   },
   "homepage": "https://github.com/rclong1221/FCC-Stocks#readme",
   "dependencies": {
-    "express": "^4.16.3"
+    "body-parser": "^1.18.2",
+    "dotenv": "^5.0.1",
+    "express": "^4.16.3",
+    "mongoose": "^5.0.12"
   }
 }
