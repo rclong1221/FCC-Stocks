@@ -5,9 +5,9 @@ $(document).ready(function () {
   $(`#${initialId}`).addClass("active");
   active.id = initialId;
 
-  // $.get("", function(data) {
-  //   console.log(data);
-  // })
+  $.get("/api/stocks", function(data) {
+    console.log(data);
+  })
 });
 
 function handleAdd() {
