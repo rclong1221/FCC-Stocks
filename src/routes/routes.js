@@ -1,3 +1,5 @@
+'use strict'
+
 const path = process.cwd()
 
 var routes = function (app) {

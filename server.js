@@ -2,7 +2,11 @@
 
 const express = require('express')
 const app = express()
-const PORT = 5000
+const PORT = 8080
+
+app.use('/controllers', express.static(process.cwd() + '/src/controllers'))
+app.use('/public', express.static(process.cwd() + '/public'))
+app.use('/common', express.static(process.cwd() + '/src/common'))
 
 app.set('port', process.env.PORT || PORT)
 
