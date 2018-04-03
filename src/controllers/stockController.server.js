@@ -10,10 +10,10 @@ class Stock {
   // TODO: If stock exists, save to DB
 
   static getStocks(req, res) {
-    res.json({ stocks: [
-      { symbol: 'appl', data: [] },
-      { symbol: 'msft', data: [] }
-    ]})
+    Stocks.find({active: true}).exec(function (err, d) {
+      if (err) console.log(err)
+      res.json(d)
+    })
   }
 
   static addStock(req, res) {
