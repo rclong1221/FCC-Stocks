@@ -1,0 +1,22 @@
+{
+  "name": "fcc-stocks",
+  "version": "1.0.0",
+  "description": "Stock charting for FCC using HTML5 Websockets and Socket.io",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rclong1221/FCC-Stocks.git"
+  },
+  "author": "R.C. Long",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rclong1221/FCC-Stocks/issues"
+  },
+  "homepage": "https://github.com/rclong1221/FCC-Stocks#readme",
+  "dependencies": {
+    "express": "^4.16.3"
+  }
+}
