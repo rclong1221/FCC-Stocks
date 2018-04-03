@@ -7,7 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<title>Pollerinho - create, participate, and share any poll...</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-		<link href="#" rel="stylesheet" type="text/css">
+		<link href="/public/styles/main.css" rel="stylesheet" type="text/css">
 	</head>
 	<header>
   </header>
@@ -15,11 +15,11 @@
 		<div class="container-fluid px-5 py-5">
       <h1 class="brand-title">markit</h1>
       <div class="timeframe-container">
-        <button class="day-btn" id="d-b" type="button">Day</button>
-        <button class="week-btn" id="w-b" type="button">Week</button>
-        <button class="month-btn" id="m-b" type="button">Month</button>
-        <button class="quarter-btn" id="q-b" type="button">Quarter</button>
-        <button class="year-button" id="y-b" type="button">Year</button>
+        <button class="day-btn" id="d-b" type="button" onclick={handleTFClick("d-b")}>Day</button>
+        <button class="week-btn" id="w-b" type="button" onclick={handleTFClick("w-b")}>Week</button>
+        <button class="month-btn" id="m-b" type="button" onclick={handleTFClick("m-b")}>Month</button>
+        <button class="quarter-btn" id="q-b" type="button" onclick={handleTFClick("q-b")}>Quarter</button>
+        <button class="year-button active" id="y-b" type="button" onclick={handleTFClick("y-b")}>Year</button>
       </div>
       <div class="graph-container">
         <div class="graph-title">
