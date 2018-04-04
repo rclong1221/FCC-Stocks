@@ -32,22 +32,18 @@ $(document).ready(function () {
   socket = io('/my-namespace');
 
   socket.on('add stock', function(d){
-    $('#t-c').append(`
-      <div id="${d.dataset_code}">
-        <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
-        ${d.dataset_code}
-      </div>`)
+    var description;
 
-    if (data.length === 0) {
-      for (var i = d.data.length - 1; i >= 0; i--) {
-        var entry = {};
-        entry["date"] = d.data[i][0];
-        entry[`${d.dataset_code}`] = d.data[i][4];
-        data.push(entry);
-      }
-      keys.push(d.dataset_code);
-    }
-    else {
+    console.log(d);
+
+    if (d.dataset_code && d.data && d.name) {
+      description = d.name.split(" (")[0];
+      $('#t-c').append(`
+        <div id="${d.dataset_code}">
+          <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
+          ${d.dataset_code} - ${description}
+        </div>`)
+
       d.data.forEach(function (item) {
         data.forEach(function (v) {
           if (v.date === item[0]) v[`${d.dataset_code}`]=item[4]
@@ -84,8 +80,6 @@ $(document).ready(function () {
   })
 
   var initialId = "y-b";
-  $(`#${initialId}`).addClass("active");
-  active.id = initialId;
 });
 
 function handleAdd() {
@@ -99,12 +93,6 @@ function handleAdd() {
 
 function handleRemove(symbol) {
   socket.emit('remove stock', symbol.toUpperCase());
-}
-
-function handleTFClick(id) {
-  $(`#${active.id}`).removeClass("active");
-  $(`#${id}`).addClass("active");
-  active.id = id;
 }
 
 function makeChart() {
