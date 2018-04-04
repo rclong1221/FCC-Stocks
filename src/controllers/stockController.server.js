@@ -18,7 +18,7 @@ class Stock {
         let date = now.getDate()
         let options = {
           method: 'GET',
-          url: `${QUANDL_URL}${item.symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - 1}-${month}-${date}&end_date=${year}-${month}-${date}`,
+          url: `${QUANDL_URL}${item.symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - 5}-${month}-${date}&end_date=${year}-${month}-${date}`,
           type: 'json',
           headers: { 'cache-control': 'no-cache' }
         }
@@ -28,7 +28,14 @@ class Stock {
           else if (!body) console.error("No body")
           else {
             let dataset = JSON.parse(body).dataset
-            socket.emit('add stock', dataset)
+            if (dataset) {
+              let response = {
+                data: dataset.data,
+                dataset_code: dataset.dataset_code,
+                name: dataset.name
+              }
+              socket.emit('add stock', response)
+            }
           }
         })
       })
