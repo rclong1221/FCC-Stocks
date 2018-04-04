@@ -15,11 +15,11 @@
 		<div class="container-fluid px-5 py-5">
       <h1 class="brand-title">markit</h1>
       <div class="timeframe-container">
-        <button class="day-btn" id="d-b" type="button" onclick={handleTFClick("d-b")}>Day</button>
-        <button class="week-btn" id="w-b" type="button" onclick={handleTFClick("w-b")}>Week</button>
-        <button class="month-btn" id="m-b" type="button" onclick={handleTFClick("m-b")}>Month</button>
-        <button class="quarter-btn" id="q-b" type="button" onclick={handleTFClick("q-b")}>Quarter</button>
-        <button class="year-button active" id="y-b" type="button" onclick={handleTFClick("y-b")}>Year</button>
+        <button class="btn day-btn" id="d-b" type="button" onclick={handleTFClick("d-b")}>Day</button>
+        <button class="btn week-btn" id="w-b" type="button" onclick={handleTFClick("w-b")}>Week</button>
+        <button class="btn month-btn" id="m-b" type="button" onclick={handleTFClick("m-b")}>Month</button>
+        <button class="btn quarter-btn" id="q-b" type="button" onclick={handleTFClick("q-b")}>Quarter</button>
+        <button class="btn year-button active" id="y-b" type="button" onclick={handleTFClick("y-b")}>Year</button>
       </div>
       <div class="graph-container">
         <div class="graph-title">
@@ -29,15 +29,18 @@
       </div>
       <div class="stock-container">
         <div class="add-container" id="a-s">
-          <input class="stock-input" id="s-i" placeholder="Add a stock symbol"/>
-          <button class="add-button" id="a-b" type="button" onclick={handleAdd()}>Add</button>
+          <input class="form-control stock-input" id="s-i" placeholder="Add a stock symbol"/>
+          <button class="btn add-button" id="a-b" type="button" onclick={handleAdd()}>Add</button>
         </div>
       </div>
+			<div class="" id="t-c">
 
+			</div>
 		</div>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.0/socket.io.slim.js" crossorigin="anonymous"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="../../controllers/stockController.client.js"></script>
 	</body>
