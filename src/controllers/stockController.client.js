@@ -100,27 +100,37 @@ function handleTFClick(id) {
 }
 
 function makeChart() {
+  var fieldMappings = [],
+      stockGraphs = [];
+
+  for (var i = 0; i < keys.length; i++) {
+    var fM = {
+      "fromField": keys[i],
+      "toField": keys[i]
+    };
+    var sG = {
+        "id": `g-${keys[i]}`,
+        "title": keys[i],
+        "lineThickness": 2,
+        "valueField": keys[i],
+        "useDataSetColors": false
+    };
+
+    fieldMappings.push(fM);
+    stockGraphs.push(sG);
+  }
+
+
   var chart = AmCharts.makeChart("g-c", {
     type: "stock",
     "theme": "light",
-    // callback
     "dataSets": [{
-      "fieldMappings": [{
-        "fromField": keys[0],
-        "toField": keys[0]
-      }, {
-        "fromField": keys[1],
-        "toField": keys[1]
-      }, {
-        "fromField": keys[2],
-        "toField": keys[2]
-      }, {
-        "fromField": keys[3],
-        "toField": keys[3]
-      }],
+      "fieldMappings": fieldMappings,
       "dataProvider": data,
       "categoryField": "date"
   }],
+
+
 
   "panels": [{
     "title": "Value",
@@ -128,32 +138,7 @@ function makeChart() {
         "periodValueTextComparing": "[[value.close]]",
         "periodValueTextRegular": "[[value.close]]"
     },
-    // callback
-    "stockGraphs": [{
-        "id": "g1",
-        "title": keys[0],
-        "lineThickness": 2,
-        "valueField": keys[0],
-        "useDataSetColors": false
-    }, {
-        "id": "g2",
-        "title": keys[1],
-        "lineThickness": 2,
-        "valueField": keys[1],
-        "useDataSetColors": false
-    }, {
-        "id": "g3",
-        "title": keys[2],
-        "lineThickness": 2,
-        "valueField": keys[2],
-        "useDataSetColors": false
-    }, {
-        "id": "g4",
-        "title": keys[3],
-        "lineThickness": 2,
-        "valueField": keys[3],
-        "useDataSetColors": false
-    }]
+    "stockGraphs": stockGraphs
   }],
 
   "chartScrollbarSettings": {
