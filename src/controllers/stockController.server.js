@@ -6,6 +6,8 @@ const Stocks = require(process.cwd() + '/src/models/stocks.js')
 const QUANDL_URL = process.env.QUANDL_URL
 const QUANDL_KEY = process.env.QUANDL_KEY
 
+const YEARS = 5
+
 class Stock {
   static getStocks(socket) {
     Stocks.find({active: true}).exec(function (err, d) {
@@ -18,7 +20,7 @@ class Stock {
         let date = now.getDate()
         let options = {
           method: 'GET',
-          url: `${QUANDL_URL}${item.symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - 5}-${month}-${date}&end_date=${year}-${month}-${date}`,
+          url: `${QUANDL_URL}${item.symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - YEARS}-${month}-${date}&end_date=${year}-${month}-${date}`,
           type: 'json',
           headers: { 'cache-control': 'no-cache' }
         }
@@ -52,7 +54,7 @@ class Stock {
     let date = now.getDate()
     let options = {
       method: 'GET',
-      url: `${QUANDL_URL}${symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - 1}-${month}-${date}&end_date=${year}-${month}-${date}`,
+      url: `${QUANDL_URL}${symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - YEARS}-${month}-${date}&end_date=${year}-${month}-${date}`,
       type: 'json',
       headers: { 'cache-control': 'no-cache' }
     }
