@@ -1,5 +1,11 @@
-.active {
-  color: lime;
+@import url('https://fonts.googleapis.com/css?family=Inconsolata:400,700|Quicksand');
+
+body * {
+  font-family: "Quicksand";
+}
+
+.brand-title {
+  font-family: "Inconsolata";
 }
 
 #g-c {
@@ -7,6 +13,6 @@
   height: 500px;
 }
 
-.missing-data {
-  color: red;
+.disclaimer {
+  font-size: 0.75em;
 }

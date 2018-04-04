@@ -37,7 +37,7 @@ $(document).ready(function () {
     if (d.dataset_code && d.data && d.name) {
       description = d.name.split(" (")[0];
       $('#t-c').append(`
-        <div id="${d.dataset_code}">
+        <div class="col-6 col-sm-6 col-md-4 my-1 stock-info" id="${d.dataset_code}">
           <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
           ${d.dataset_code} - ${description}
         </div>`)
@@ -124,7 +124,7 @@ function makeChart() {
     }],
 
     "panels": [{
-      "title": "Value",
+      "title": "Price (USD)",
       "stockLegend": {
         "periodValueTextComparing": "[[value.close]]",
         "periodValueTextRegular": "[[value.close]]"
