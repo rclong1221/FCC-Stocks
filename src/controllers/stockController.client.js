@@ -8,10 +8,6 @@ var active = { id: "" };
 $(document).ready(function () {
   socket = io('/my-namespace');
 
-  socket.on('initial data', function(d){
-    console.log(d);
-  });
-
   socket.on('add stock', function(d){
 
     $('#t-c').append(`
@@ -21,10 +17,8 @@ $(document).ready(function () {
       </div>`)
 
     if (data.length === 0) {
-      // console.log("++++++IN++++++");
       for (var i = d.data.length - 1; i >= 0; i--) {
         var entry = {};
-        // TODO: Convert to date?
         entry["date"] = d.data[i][0];
         entry[`${d.dataset_code}`] = d.data[i][4];
         data.push(entry);
@@ -41,9 +35,6 @@ $(document).ready(function () {
       }
       keys.push(d.dataset_code);
     }
-
-    console.log(keys);
-    console.log(data);
 
     makeChart();
   });
@@ -62,9 +53,6 @@ $(document).ready(function () {
         delete v[`${d}`];
       });
     }
-
-    console.log(keys);
-    console.log(data);
 
     $(`#${d}`).remove();
 
@@ -120,7 +108,6 @@ function makeChart() {
     stockGraphs.push(sG);
   }
 
-
   var chart = AmCharts.makeChart("g-c", {
     type: "stock",
     "theme": "light",
@@ -128,38 +115,36 @@ function makeChart() {
       "fieldMappings": fieldMappings,
       "dataProvider": data,
       "categoryField": "date"
-  }],
+    }],
 
-
-
-  "panels": [{
-    "title": "Value",
-    "stockLegend": {
+    "panels": [{
+      "title": "Value",
+      "stockLegend": {
         "periodValueTextComparing": "[[value.close]]",
         "periodValueTextRegular": "[[value.close]]"
+      },
+      "stockGraphs": stockGraphs
+    }],
+
+    "chartScrollbarSettings": {
+      "graph": "g1"
     },
-    "stockGraphs": stockGraphs
-  }],
 
-  "chartScrollbarSettings": {
-    "graph": "g1"
-  },
+    "chartCursorSettings": {
+      "valueBalloonsEnabled": true,
+      "fullWidth": true,
+      "cursorAlpha": 0.1,
+      "valueLineBalloonEnabled": true,
+      "valueLineEnabled": true,
+      "valueLineAlpha": 0.5
+    },
 
-  "chartCursorSettings": {
-    "valueBalloonsEnabled": true,
-    "fullWidth": true,
-    "cursorAlpha": 0.1,
-    "valueLineBalloonEnabled": true,
-    "valueLineEnabled": true,
-    "valueLineAlpha": 0.5
-  },
-
-  "periodSelector": {
-    "position": "top",
-    "periodsText": "Timeframe: ",
-    "inputFieldsEnabled": false,
-    "periods": [
-      {
+    "periodSelector": {
+      "position": "top",
+      "periodsText": "Timeframe: ",
+      "inputFieldsEnabled": false,
+      "periods": [
+        {
           "period": "DD",
           "selected": false,
           "count": 7,
@@ -186,7 +171,5 @@ function makeChart() {
       ]
     }
   });
-
-
 
 }
