@@ -1,38 +1,91 @@
 'use strict'
 
+const Request = require('request')
 const Stocks = require(process.cwd() + '/src/models/stocks.js')
 
+const QUANDL_URL = process.env.QUANDL_URL
+const QUANDL_KEY = process.env.QUANDL_KEY
+
 class Stock {
-  // TODO: Test with regex
-
-  // TODO: If pass regex make API call
-
-  // TODO: If stock exists, save to DB
-
-  static getStocks(req, res) {
+  static getStocks(socket) {
     Stocks.find({active: true}).exec(function (err, d) {
       if (err) console.log(err)
-      res.json(d)
+
+      d.forEach(function (item) {
+        let now = new Date()
+        let year = now.getFullYear()
+        let month = now.getMonth() + 1
+        let date = now.getDate()
+        let options = {
+          method: 'GET',
+          url: `${QUANDL_URL}${item.symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - 1}-${month}-${date}&end_date=${year}-${month}-${date}`,
+          type: 'json',
+          headers: { 'cache-control': 'no-cache' }
+        }
+
+        Request(options, function (err, response, body) {
+          if (err) console.error(err)
+          else if (!body) console.error("No body")
+          else {
+            let dataset = JSON.parse(body).dataset
+            socket.emit('add stock', dataset)
+          }
+        })
+      })
     })
   }
 
-  static addStock(req, res) {
-    let stock = new Stocks({
-      symbol: req.params.symbol,
-      name: "Microsoft",
-      active: true
-    })
+  static addStock(socket, symbol) {
+    // TODO: Test with regex
 
-    var options = { upsert: true, new: true };
+    // TODO: If pass regex make API call
+    let now = new Date()
+    let year = now.getFullYear()
+    let month = now.getMonth() + 1
+    let date = now.getDate()
+    let options = {
+      method: 'GET',
+      url: `${QUANDL_URL}${symbol}.json?api_key=${QUANDL_KEY}&start_date=${year - 1}-${month}-${date}&end_date=${year}-${month}-${date}`,
+      type: 'json',
+      headers: { 'cache-control': 'no-cache' }
+    }
 
-    Stocks.findOneAndUpdate({symbol: stock.symbol}, {name: stock.name, active: stock.active}, options, function (err, result) {
-      if (err) {
-        throw console.error(err)
-        res.status(500).json({ desc: "save failed" })
-      }
+    Request(options, function (err, response, body) {
+      let dataset
+      if (err) console.error(err)
+      else if (!body) console.error("No body")
+      else if (!JSON.parse(body).dataset) socket.emit('invalid symbol', symbol)
       else {
-        res.json({ desc: "save success"})
+        dataset = JSON.parse(body).dataset
+
+        // If stock exists, save to DB
+        let stock = new Stocks({
+          symbol: dataset.dataset_code,
+          name: dataset.name,
+          active: true
+        })
+
+        Stocks.find({symbol: stock.symbol}).exec(function (err, data) {
+          if (err) console.error(err)
+          else {
+            if (data.length === 0) {
+              stock.save(function (err) {
+                if (err) console.error(err)
+              })
+            } else if (!data.active) stock.save(function (err) {
+              if (err) console.error(err)
+            })
+            socket.emit('add stock', dataset)
+          }
+        })
       }
+    })
+  }
+
+  static removeStock(socket, symbol) {
+    Stocks.update({symbol: symbol}, {$set: {active: false}}, function (err){
+      if (err) console.error(err)
+      else socket.emit('remove stock', symbol)
     })
   }
 }

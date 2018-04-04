@@ -1,38 +1,58 @@
+var socket,
+    data = [];
+
 var active = { id: "" };
 
 $(document).ready(function () {
+  socket = io('/my-namespace');
+
+  socket.on('initial data', function(d){
+    // data = d;
+    console.log(d);
+  });
+
+  socket.on('add stock', function(d){
+    data.push(d);
+    console.log(d);
+    $('#t-c').append(`
+      <div id="${d.dataset_code}">
+        <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
+        ${d.dataset_code}
+      </div>`)
+  });
+
+  socket.on('remove stock', function(d){
+    for(var i = 0; i < data.length; i++) {
+      if(data[i].dataset_code === d) {
+        data.splice(i, 1);
+        break;
+      }
+    }
+    console.log(data)
+    console.log(`+++++++++++${d}+++++++++++++`)
+    $(`#${d}`).remove();
+  });
+
+  socket.on('invalid symbol', function(d){
+    console.log(`d is an invalid symbol`);
+  })
+
   var initialId = "y-b";
   $(`#${initialId}`).addClass("active");
   active.id = initialId;
-
-  getData();
 });
 
-function getData() {
-  $.get("/api/stocks", function(data) {
-    console.log(data);
-  })
+function handleAdd() {
+  var s = $("#s-i").val();
+  // To limit API calls, eliminate the possibility of sending surely invalid ticker symbols
+  if (s.length > 0 && s.length < 6) {
+    socket.emit('add stock', s.toUpperCase());
+    $("#s-i").val("");
+  }
 }
 
-function handleAdd() {
-  var s = $("#s-i").val()
-  // To limit API calls, eliminate the possibility of sending surely invalid ticker symbols
-  if (s !== "" || s.length < 6) {
-  $.ajax({
-      type: "POST",
-      url: `/api/stock/${s}`,
-      data: { symbol: s },
-      dataType: "JSON",
-      success: function () {
-        getData();
-        console.log("success");
-      },
-      error: function (err) {
-        console.log(err);
-        console.log("failure");
-      }
-    });
-  }
+function handleRemove(symbol) {
+  socket.emit('remove stock', symbol.toUpperCase());
 }
 
 function handleTFClick(id) {
