@@ -6,13 +6,13 @@ var nsp = function (io) {
   var mns = io.of('/my-namespace')
 
   mns.on('connection', function(socket){
-    // Get all data and send to user
+    // console.log('User connected')
 
-    console.log('User connected')
+    // Get all data and send to user
     Stock.getStocks(socket)
 
     socket.on('disconnect', function(s){
-      console.log('User disconnected')
+      // console.log('User disconnected')
     })
 
     socket.on('add stock', function(symbol){
