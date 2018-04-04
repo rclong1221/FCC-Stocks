@@ -72,9 +72,11 @@ class Stock {
               stock.save(function (err) {
                 if (err) console.error(err)
               })
-            } else if (!data.active) stock.save(function (err) {
-              if (err) console.error(err)
-            })
+            } else {
+              Stocks.update({symbol: stock.symbol}, {$set: {active: true}}, function (err){
+                if (err) console.error(err)
+              })
+            }
             socket.emit('add stock', dataset)
           }
         })
