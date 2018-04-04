@@ -3,20 +3,6 @@ var socket,
     data = [],
     selected = [false, false, false, false, true];
 
-var active = { id: "" };
-
-function formatDate(date) {
-    var d = new Date(date),
-        month = '' + (d.getMonth() + 1),
-        day = '' + d.getDate(),
-        year = d.getFullYear();
-
-    if (month.length < 2) month = '0' + month;
-    if (day.length < 2) day = '0' + day;
-
-    return [year, month, day].join('-');
-}
-
 function generateChartData() {
   var firstDate = new Date();
   firstDate.setDate(firstDate.getDate() - (365 * 5));
@@ -36,9 +22,7 @@ function generateChartData() {
 
     var nd = [year, month, day].join('-');
 
-    data.push({
-        date: nd
-    });
+    data.push({ date: nd });
   }
 }
 
@@ -48,8 +32,6 @@ $(document).ready(function () {
   socket = io('/my-namespace');
 
   socket.on('add stock', function(d){
-    console.log(d);
-    console.log(d.dataset_code);
     $('#t-c').append(`
       <div id="${d.dataset_code}">
         <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
@@ -71,7 +53,6 @@ $(document).ready(function () {
           if (v.date === item[0]) v[`${d.dataset_code}`]=item[4]
         })
       })
-      console.log(data);
       keys.push(d.dataset_code);
     }
 
