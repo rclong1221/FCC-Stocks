@@ -34,8 +34,6 @@ $(document).ready(function () {
   socket.on('add stock', function(d){
     var description;
 
-    console.log(d);
-
     if (d.dataset_code && d.data && d.name) {
       description = d.name.split(" (")[0];
       $('#t-c').append(`
