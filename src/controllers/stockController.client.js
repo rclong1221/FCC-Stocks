@@ -5,11 +5,51 @@ var socket,
 
 var active = { id: "" };
 
+function formatDate(date) {
+    var d = new Date(date),
+        month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    return [year, month, day].join('-');
+}
+
+function generateChartData() {
+  var firstDate = new Date();
+  firstDate.setDate(firstDate.getDate() - (365 * 5));
+  firstDate.setHours(0, 0, 0, 0);
+
+  for (var i = 0; i < (365 * 5); i++) {
+    var d = new Date(firstDate);
+
+    d.setDate(d.getDate() + i);
+
+    var month = '' + (d.getMonth() + 1),
+        day = '' + d.getDate(),
+        year = d.getFullYear();
+
+    if (month.length < 2) month = '0' + month;
+    if (day.length < 2) day = '0' + day;
+
+    var nd = [year, month, day].join('-');
+
+    data.push({
+        date: nd
+    });
+  }
+}
+
+generateChartData();
+
 $(document).ready(function () {
   socket = io('/my-namespace');
 
   socket.on('add stock', function(d){
-
+    console.log(d);
+    console.log(d.dataset_code);
     $('#t-c').append(`
       <div id="${d.dataset_code}">
         <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
@@ -25,14 +65,13 @@ $(document).ready(function () {
       }
       keys.push(d.dataset_code);
     }
-    else if (data.length !== d.data.length) {
-      $(`#${d.dataset_code}`).addClass("missing-data");
-    }
     else {
-      for (var i = d.data.length - 1; i >= 0; i--) {
-        var entry = {};
-        data[i][`${d.dataset_code}`] = d.data[i][4];
-      }
+      d.data.forEach(function (item) {
+        data.forEach(function (v) {
+          if (v.date === item[0]) v[`${d.dataset_code}`]=item[4]
+        })
+      })
+      console.log(data);
       keys.push(d.dataset_code);
     }
 
