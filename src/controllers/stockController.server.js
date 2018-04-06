@@ -36,7 +36,7 @@ class Stock {
                 dataset_code: dataset.dataset_code,
                 name: dataset.name
               }
-              socket.emit('add stock', response)
+              return socket.emit('add stock', response)
             }
           }
         })
@@ -63,7 +63,7 @@ class Stock {
       let dataset
       if (err) console.error(err)
       else if (!body) console.error("No body")
-      else if (!JSON.parse(body).dataset) socket.emit('invalid symbol', symbol)
+      else if (!JSON.parse(body).dataset) return socket.emit('invalid symbol', symbol)
       else {
         dataset = JSON.parse(body).dataset
 
@@ -86,7 +86,7 @@ class Stock {
                 if (err) console.error(err)
               })
             }
-            socket.emit('add stock', dataset)
+            return socket.emit('add stock', dataset)
           }
         })
       }
@@ -96,7 +96,7 @@ class Stock {
   static removeStock(socket, symbol) {
     Stocks.update({symbol: symbol}, {$set: {active: false}}, function (err){
       if (err) console.error(err)
-      else socket.emit('remove stock', symbol)
+      else return socket.emit('remove stock', symbol)
     })
   }
 }
