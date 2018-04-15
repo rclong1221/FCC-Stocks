@@ -3,6 +3,39 @@ var socket,
     data = [],
     selected = [false, false, false, false, true];
 
+$(document).ready(function () {
+  socket = io('/stocks-ns');
+
+  generateChartData();
+  connectAddStock();
+  connectRemoveStock();
+  connectInvalidSymbol();
+});
+
+function connectAddStock() {
+  socket.on('add stock', function(d){
+    var description;
+
+    if (d.dataset_code && d.data && d.name) {
+      description = d.name.split(" (")[0];
+      $('#t-c').append(`
+        <div class="col-6 col-sm-6 col-md-4 my-1 stock-info" id="${d.dataset_code}">
+          <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
+          ${d.dataset_code} - ${description}
+        </div>`)
+
+      d.data.forEach(function (item) {
+        data.forEach(function (v) {
+          if (v.date === item[0]) v[`${d.dataset_code}`]=item[4]
+        })
+      })
+      keys.push(d.dataset_code);
+    }
+
+    makeChart();
+  });
+}
+
 function generateChartData() {
   var firstDate = new Date();
   firstDate.setDate(firstDate.getDate() - (365 * 5));
@@ -26,33 +59,7 @@ function generateChartData() {
   }
 }
 
-generateChartData();
-
-$(document).ready(function () {
-  socket = io('/my-namespace');
-
-  socket.on('add stock', function(d){
-    var description;
-
-    if (d.dataset_code && d.data && d.name) {
-      description = d.name.split(" (")[0];
-      $('#t-c').append(`
-        <div class="col-6 col-sm-6 col-md-4 my-1 stock-info" id="${d.dataset_code}">
-          <button class="btn" type="button" onclick={handleRemove("${d.dataset_code}")}>X</button>
-          ${d.dataset_code} - ${description}
-        </div>`)
-
-      d.data.forEach(function (item) {
-        data.forEach(function (v) {
-          if (v.date === item[0]) v[`${d.dataset_code}`]=item[4]
-        })
-      })
-      keys.push(d.dataset_code);
-    }
-
-    makeChart();
-  });
-
+function connectRemoveStock() {
   socket.on('remove stock', function(d){
     for (var i = 0; i < data.length; i++) {
       if(keys[i] === d) {
@@ -72,17 +79,16 @@ $(document).ready(function () {
 
     makeChart();
   });
+}
 
+function connectInvalidSymbol() {
   socket.on('invalid symbol', function(d){
     console.log(`d is an invalid symbol`);
   })
-
-  var initialId = "y-b";
-});
+}
 
 function handleAdd() {
   var s = $("#s-i").val();
-  // To limit API calls, eliminate the possibility of sending surely invalid ticker symbols
   if (s.length > 0 && s.length < 6) {
     socket.emit('add stock', s.toUpperCase());
     $("#s-i").val("");
