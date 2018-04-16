@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 
 <html lang="en">
-
 	<head>
 		<meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -20,13 +19,12 @@
         <div class="graph" id="g-c">
         </div>
       </div>
-			<div class="row" id="t-c"></div>
+			<div class="row mt-5 mt-sm-0" id="t-c"></div>
       <div class="stock-container">
-
 				<div class="input-group mb-3 add-container" id="a-s">
-				  <input type="text" class="form-control stock-input" placeholder="" aria-label="" aria-describedby="basic-addon1" id="s-i" placeholder="Add a stock symbol">
+				  <input type="text" class="form-control stock-input" aria-label="" aria-describedby="basic-addon1" id="s-i" placeholder="Add a stock symbol">
 					<div class="input-group-append">
-				    <button class="btn btn-outline-secondary add-button" id="a-b" type="button" onclick={handleAdd()}>Add Stock</button>
+				    <button class="btn btn-outline-secondary add-button" id="a-b" type="button" onclick="handleAdd()">Add Stock</button>
 				  </div>
 				</div>
 				<p class="text-center disclaimer">The free API used in this project was provided by Quandl.  If the app becomes unresponsive to requests, there have been too many calls on the key.</p>
@@ -42,6 +40,5 @@
 		<script src="https://www.amcharts.com/lib/3/amstock.js"></script>
 		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
 		<script type="text/javascript" src="../../controllers/stockController.client.js"></script>
-		<script type="text/javascript"
 	</body>
 </html>
