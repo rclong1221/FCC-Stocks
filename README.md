@@ -4,8 +4,8 @@ https://giddy-cold.glitch.me/
 
 ## Installation
 
-git clone https://github.com/rclong1221/FCC-Stocks.git
-cd "FCC-Stocks"  
+git clone https://github.com/rclong1221/markit.git
+cd "markit"  
 npm install  
 
 ## Setup
